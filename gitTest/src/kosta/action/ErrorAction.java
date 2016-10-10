@@ -10,6 +10,7 @@ public class ErrorAction implements Action{
 			HttpServletResponse response) {
 		ActionForward forward = new ActionForward();
 		forward.setRedirect(true);
+		//모가
 		forward.setUrl(request.getContextPath()+"/board/errorPage.jsp");
 		return forward;
 	}
