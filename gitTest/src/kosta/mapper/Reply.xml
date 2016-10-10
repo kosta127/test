@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="kosta.mapper.ReplyMapper">
+	<cache />
+	<select id="getMaxId" resultType="int">
+		SELECT NVL(max(r_id), 0) FROM TESTREPLY
+	</select>
+	
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO TESTREPLY
+		(R_ID, R_PASSWORD, R_NAME, R_CONTENTS, R_REGDATE, B_ID)
+		VALUES
+		(#{r_id}, #{r_password}, #{r_name}, #{r_contents},
+		 SYSDATE, #{b_id})
+	</insert>
+	
+	<select id="listReply" resultType="Reply" parameterType="int">
+		SELECT R_ID, R_NAME, R_CONTENTS, R_REGDATE 
+			FROM TESTREPLY
+			WHERE R_DELDATE IS NULL
+			AND B_ID = #{b_id}
+			ORDER BY R_ID ASC 
+	</select>
+	
+	<select id="getPassword" resultType="String" parameterType="int">
+		SELECT r_password FROM TESTREPLY WHERE R_ID = #{r_id}
+	</select>
+	
+	<update id="deleteReply" parameterType="int">
+		UPDATE TESTREPLY SET R_DELDATE = SYSDATE
+			WHERE R_ID = #{r_id}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

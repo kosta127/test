@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="kosta.mapper.BoardMapper">
+	<cache />
+	<select id="getMaxId" resultType="int">
+		SELECT NVL(max(b_id), 0) FROM TESTBOARD
+	</select>
+	
+	<insert id="insertBoard" parameterType="Board">
+		INSERT INTO TESTBOARD
+		(B_ID, B_PASSWORD, B_NAME, B_TITLE, B_CONTENTS, B_HIT,
+		 B_REGDATE)
+		VALUES
+		(#{b_id}, #{b_password}, #{b_name}, #{b_title}, #{b_contents},
+		 0, SYSDATE)
+	</insert>
+	
+	<select id="listBoard" resultType="Board">
+		SELECT B_ID, B_NAME, B_TITLE, 
+				B_HIT, B_REGDATE, (SELECT COUNT(*) 
+									FROM TESTREPLY R
+									WHERE r.b_id = t.b_id) replyCount
+			FROM TESTBOARD T
+			WHERE B_DELDATE IS NULL
+			ORDER BY B_ID DESC 
+	</select>
+	
+	<select id="detailView" resultType="Board" parameterType="int">
+		SELECT * FROM TESTBOARD WHERE B_ID = #{b_id}
+	</select>
+	
+	<select id="getPassword" resultType="String" parameterType="int">
+		SELECT b_password FROM TESTBOARD WHERE B_ID = #{b_id}
+	</select>
+	
+	<update id="deleteBoard" parameterType="int">
+		UPDATE TESTBOARD SET B_DELDATE = SYSDATE
+			WHERE B_ID = #{b_id}
+	</update>
+	
+	<update id="updateBoard" parameterType="Board" >
+		UPDATE TESTBOARD 
+			SET B_NAME = #{b_name}, B_TITLE = #{b_title}, B_CONTENTS = #{b_contents}
+			WHERE B_ID = #{b_id} 
+	</update>
+	
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*) FROM TESTBOARD 
+			WHERE B_DELDATE IS NULL
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		UPDATE TESTBOARD SET B_HIT = B_HIT+1 WHERE B_ID = #{b_id}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
