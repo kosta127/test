@@ -8,5 +8,5 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class Dao {
 	
-	//변경사항생겨버림
+	//변경사항생겨버림 또생겨버림
 }
